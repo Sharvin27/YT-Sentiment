@@ -7,13 +7,13 @@ import pickle
 
 VOCAB_SIZE = 20000
 MAX_LEN = 250
-MODEL_PATH = "sentiment_analysis_model.h5"
+MODEL_PATH = "app\\sentiment_analysis_model.h5"
 
 # Load the saved model
 model = load_model(MODEL_PATH)
 
 # Load the tokenizer
-with open('tokenizer.pickle', 'rb') as handle:
+with open('app\\tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
 
