@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 50px 20px;
+            background-color: #0f0e13;
+            background-image: 
+              radial-gradient(at 0% 100%, hsla(253, 16%, 7%, 1) 0, transparent 50%), 
+              radial-gradient(at 50% 0%, hsla(225, 39%, 25%, 1) 0, transparent 50%);
+            color: #333; /* Dark text for better visibility */
+        }
+
+        header {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .logo {
+            width: 150px; /* Adjust the width of the logo */
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 0.2) 0, transparent 50%),
+                radial-gradient(at 50% 100%, hsla(225, 39%, 25%, 0.2) 0, transparent 50%);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+            overflow: hidden; /* Hide the vertical scrollbar for the main container */
+        }
+
+        .comments-container {
+            max-height: 400px; /* Adjust the maximum height for the comments container */
+            overflow-y: auto; /* Enable vertical scrolling for the comments container */
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            margin-right: 10px;
+            box-sizing: border-box;
+            color: #333;
+            font-weight: bold; /* Bold text for better visibility */
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+            color: #333;
+            font-weight: bold; /* Bold text for better visibility */
+        }
+
+        h2,
+        h3 {
+            color: #3498db;
+            font-weight: bold; /* Bold text for better visibility */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <!-- Place your logo here -->
+        <img src="{{url_for('static', filename='logo1.png')}}" alt="Logo" class="logo"/>
+        <h1 style="color: #3498db;">YouTube Sentiment Analysis</h1>
+    </header>
+
+    <div class="container">
+        <form id="analysisForm" action="/" method="post">
+            <input type="text" name="video_url" placeholder="Enter YouTube URL" required>
+            <input type="submit" value="Analyze">
+        </form>
+
+        {% if summary %}
+        <div id="summarySection">
+            <h2>Summary</h2>
+            <p>Positive: {{ summary['positive'] }}</p>
+            <p>Negative: {{ summary['negative'] }}</p>
+            <p>Number of Comments: {{ summary['num_comments'] }}</p>
+            <p>Rating: {{ summary['rating'] }}%</p>
+        </div>
+        <div class="comments-container" id="commentsContainer">
+            <h3>Comments</h3>
+            <table>
+                <tr>
+                    <th>Comment</th>
+                    <th>Sentiment</th>
+                </tr>
+                {% for comment, sentiment in comments %}
+                <tr>
+                    <td>{{ comment }}</td>
+                    <td>{{ sentiment }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Adjust the height of the comments container based on the available space
+        function adjustCommentsContainerHeight() {
+            var container = document.getElementById('commentsContainer');
+            var windowHeight = window.innerHeight;
+            var headerHeight = document.querySelector('header').offsetHeight;
+            var summaryHeight = document.getElementById('summarySection').offsetHeight;
+            var containerHeight = windowHeight - headerHeight - summaryHeight - 40; // Adjust as needed
+            container.style.maxHeight = containerHeight + 'px';
+        }
+
+        // Call the function on window resize
+        window.onresize = adjustCommentsContainerHeight;
+
+        // Call the function on page load
+        window.onload = adjustCommentsContainerHeight;
+    </script>
+
+</body>
+
+</html>
