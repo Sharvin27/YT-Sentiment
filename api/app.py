@@ -34,7 +34,6 @@ def index():
     if request.method == 'POST':
         video_url = request.form.get('video_url')
         video_id = video_url.split("v=")[1].split("&")[0]
-        print(video_id)
         data = get_video(video_id)
 
         summary = data['summary']
@@ -42,4 +41,4 @@ def index():
     return render_template('index.html', summary=summary, comments=comments)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
