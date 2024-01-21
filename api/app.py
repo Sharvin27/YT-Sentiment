@@ -33,7 +33,8 @@ def index():
     comments = []
     if request.method == 'POST':
         video_url = request.form.get('video_url')
-        video_id = video_url.split("v=")[1]
+        video_id = video_url.split("v=")[1].split("&")[0]
+        print(video_id)
         data = get_video(video_id)
 
         summary = data['summary']
